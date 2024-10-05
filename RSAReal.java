@@ -132,7 +132,7 @@ public class RSAReal {
         "7. (Bonus) Develop code to implement the Chinese Remainder Theorem (CRT) and use it to decrypt the ciphertext obtained earlier. Print out the decrypted cleartext in hex.\n");
     System.out.println("      m' = 0x" + msgDecryptedCRT.toString(16));
     System.out.println("      kbps: " + kbps2 + "\n");
-    System.out.println("      The CRT decryption was " + String.format("%.4f", kbps2 / kbps)
-        + "x faster than the plain way. However, this is not 4x faster than theorized. This is likely due to the overhead costs of initializing more BigInteger variables and conducting more BigInteger arithmetic operations within the CRT method.");
+    System.out.println("The CRT decryption was " + String.format("%.4f", kbps2 / kbps)
+        + "x faster than the plain way. However, this is not 4x faster than theorized. This is likely due to the overhead costs of initializing more BigInteger variables and conducting more BigInteger arithmetic operations within the CRT method.\n");
   }
 }
