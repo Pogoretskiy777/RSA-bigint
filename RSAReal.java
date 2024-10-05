@@ -2,7 +2,16 @@ import java.math.BigInteger;
 
 public class RSAReal {
 
-  // Using Chinese Remainder Theorem to decrypt Alice's message.
+  /**
+   * Decrypt the RSA-encrypted message using the Chinese Remainder Theorem.
+   * 
+   * @param p The first prime factor.
+   * @param q The second prime factor.
+   * @param c The cipher text.
+   * @param d Bob's private key.
+   * @param N Bob's public key (p * q).
+   * @return Returns decrypted message.
+   */
   public static BigInteger decrypt_with_crt(BigInteger p, BigInteger q, BigInteger c, BigInteger d, BigInteger N) {
 
     // Calculate a1 and a2
@@ -44,49 +53,49 @@ public class RSAReal {
     BigInteger N = p.multiply(q); // N = p * q
 
     // Finding private key d
-    BigInteger p_minus_one = p.subtract(BigInteger.ONE); // p - 1
-    BigInteger q_minus_one = q.subtract(BigInteger.ONE); // q - 1
-    BigInteger Z = p_minus_one.multiply(q_minus_one); // (p - 1) * (q - 1)
+    BigInteger pMinusOne = p.subtract(BigInteger.ONE); // p - 1
+    BigInteger qMinusOne = q.subtract(BigInteger.ONE); // q - 1
+    BigInteger Z = pMinusOne.multiply(qMinusOne); // (p - 1) * (q - 1)
     BigInteger d = e.modInverse(Z); // e^-1 mod Z
 
     // Encrypting message '3' and creating ciphertext (c)
-    BigInteger message = new BigInteger("3", 10);
-    BigInteger c = message.modPow(e, N); // m^e mod N
+    BigInteger msgToEncrypt = new BigInteger("3", 10);
+    BigInteger c = msgToEncrypt.modPow(e, N); // m^e mod N
 
     // Decrypt message plainly
-    BigInteger decrypted_message = null; // Initialize before calculating in loop
+    BigInteger msgDecrypted = null; // Initialize before calculating in loop
 
     // Loop 1000 times
-    long start_time = System.nanoTime(); // Start timer
+    long startTimePlain = System.nanoTime(); // Start timer
     for (int i = 0; i < 1000; i++) {
-      decrypted_message = c.modPow(d, N); // c^d mod N
+      msgDecrypted = c.modPow(d, N); // c^d mod N
     }
-    long end_time = System.nanoTime(); // End timer
+    long endTimePlain = System.nanoTime(); // End timer
 
     // Calculate seconds it took to loop 1000 times
-    long duration_nano = end_time - start_time;
-    double duration_secs = duration_nano / 1_000_000_000.0;
+    long durationInNano = endTimePlain - startTimePlain;
+    double durationInSecs = durationInNano / 1_000_000_000.0;
 
     // Calculate kilo bits per second (kbps)
-    double kbps = N.bitLength() / (duration_secs / 1000.0);
+    double kbps = N.bitLength() / (durationInSecs / 1000.0);
 
     // Calculate and format giga bits per second (gbps)
     String gbps = String.format("%.2f", (kbps / 1_000_000.0));
 
     // Decrypt message with Chinese Remainder Theorem (CRT) method 1000 times
-    BigInteger decrypted_message_crt = null;
-    long start_time2 = System.nanoTime(); // Start timer
+    BigInteger msgDecryptedCRT = null;
+    long startTimeCRT = System.nanoTime(); // Start timer
     for (int i = 0; i < 1000; i++) {
-      decrypted_message_crt = decrypt_with_crt(p, q, c, d, N);
+      msgDecryptedCRT = decrypt_with_crt(p, q, c, d, N);
     }
-    long end_time2 = System.nanoTime(); // End timer
+    long endTimeCRT = System.nanoTime(); // End timer
 
     // Calculate seconds it took to loop 1000 times
-    long duration_nano2 = end_time2 - start_time2;
-    double duration_secs2 = duration_nano2 / 1_000_000_000.0;
+    long durationInNanoCRT = endTimeCRT - startTimeCRT;
+    double durationInSecsCRT = durationInNanoCRT / 1_000_000_000.0;
 
     // Calculate kilo bits per second (kbps)
-    double kbps2 = N.bitLength() / (duration_secs2 / 1000.0);
+    double kbps2 = N.bitLength() / (durationInSecsCRT / 1000.0);
 
     // Question #1
     System.out.println("\n1. What is Bob's public key?\n");
@@ -109,19 +118,19 @@ public class RSAReal {
 
     // Question #5
     System.out.println("5. For the ciphertext in the last question, how will Bob decrypt it?\n");
-    System.out.println("      m' = 0x" + decrypted_message.toString(16) + "\n");
+    System.out.println("      m' = 0x" + msgDecrypted.toString(16) + "\n");
 
     // Question #6
     System.out.println(
         "6. Measure the speed of RSA decryption by running it 1000 times, measuring the time elapsed, and calculating RSA's decryption speed in kilo bits per second\n");
     System.out.println("      kbps: " + kbps + "\n");
     System.out.println("      This speed is not fast enough for modern-day gigabit-per-second since "
-        + gbps + " gbps is slower than 1 gbps.");
+        + gbps + " gbps is slower than 1 gbps.\n");
 
     // Question #7
     System.out.println(
         "7. (Bonus) Develop code to implement the Chinese Remainder Theorem (CRT) and use it to decrypt the ciphertext obtained earlier. Print out the decrypted cleartext in hex.\n");
-    System.out.println("      m' = 0x" + decrypted_message_crt.toString(16));
+    System.out.println("      m' = 0x" + msgDecryptedCRT.toString(16));
     System.out.println("      kbps: " + kbps2 + "\n");
     System.out.println("      The CRT decryption was " + String.format("%.4f", kbps2 / kbps)
         + "x faster than the plain way. However, this is not 4x faster than theorized. This is likely due to the overhead costs of initializing more BigInteger variables and conducting more BigInteger arithmetic operations within the CRT method.");
