@@ -28,7 +28,7 @@ public class RSAFlawed {
     BigInteger c = message.modPow(e, N); // m^e mod N
 
     // Decrypting message (m)
-    BigInteger decrypted_message = c.modPow(d, N);
+    BigInteger decrypted_message = c.modPow(d, N); // c^d mod N
 
     // Question #1
     System.out.println("\n1. How many bits does N have? ");
@@ -53,6 +53,6 @@ public class RSAFlawed {
 
     // Question #5
     System.out.println("5. For the above ciphertext, decrypt it and show sufficient details on how you decrypt it.");
-    System.out.println("      m' = " + decrypted_message.toString(16) + "\n");
+    System.out.println("      m' = 0x" + decrypted_message.toString(16) + "\n");
   }
 }
