@@ -12,7 +12,7 @@ public class RSAReal {
    * @param N Bob's public key (p * q).
    * @return Returns decrypted message.
    */
-  public static BigInteger decrypt_with_crt(BigInteger p, BigInteger q, BigInteger c, BigInteger d, BigInteger N) {
+  public static BigInteger decryptWithCRT(BigInteger p, BigInteger q, BigInteger c, BigInteger d, BigInteger N) {
 
     // Calculate a1 and a2
     BigInteger a1 = c.modPow(d, p);
@@ -86,7 +86,7 @@ public class RSAReal {
     BigInteger msgDecryptedCRT = null;
     long startTimeCRT = System.nanoTime(); // Start timer
     for (int i = 0; i < 1000; i++) {
-      msgDecryptedCRT = decrypt_with_crt(p, q, c, d, N);
+      msgDecryptedCRT = decryptWithCRT(p, q, c, d, N);
     }
     long endTimeCRT = System.nanoTime(); // End timer
 
