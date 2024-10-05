@@ -77,10 +77,10 @@ public class RSAReal {
     double durationInSecs = durationInNano / 1_000_000_000.0;
 
     // Calculate kilo bits per second (kbps)
-    double kbps = N.bitLength() / (durationInSecs / 1000.0);
+    double kbpsPlain = N.bitLength() / (durationInSecs / 1000.0);
 
     // Calculate and format giga bits per second (gbps)
-    String gbps = String.format("%.2f", (kbps / 1_000_000.0));
+    String gbps = String.format("%.2f", (kbpsPlain / 1_000_000.0));
 
     // Decrypt message with Chinese Remainder Theorem (CRT) method 1000 times
     BigInteger msgDecryptedCRT = null;
@@ -95,7 +95,7 @@ public class RSAReal {
     double durationInSecsCRT = durationInNanoCRT / 1_000_000_000.0;
 
     // Calculate kilo bits per second (kbps)
-    double kbps2 = N.bitLength() / (durationInSecsCRT / 1000.0);
+    double kbpsCRT = N.bitLength() / (durationInSecsCRT / 1000.0);
 
     // Question #1
     System.out.println("\n1. What is Bob's public key?\n");
@@ -123,7 +123,7 @@ public class RSAReal {
     // Question #6
     System.out.println(
         "6. Measure the speed of RSA decryption by running it 1000 times, measuring the time elapsed, and calculating RSA's decryption speed in kilo bits per second\n");
-    System.out.println("      kbps: " + kbps + "\n");
+    System.out.println("      kbps: " + kbpsPlain + "\n");
     System.out.println("      This speed is not fast enough for modern-day gigabit-per-second since "
         + gbps + " gbps is slower than 1 gbps.\n");
 
@@ -131,8 +131,8 @@ public class RSAReal {
     System.out.println(
         "7. (Bonus) Develop code to implement the Chinese Remainder Theorem (CRT) and use it to decrypt the ciphertext obtained earlier. Print out the decrypted cleartext in hex.\n");
     System.out.println("      m' = 0x" + msgDecryptedCRT.toString(16));
-    System.out.println("      kbps: " + kbps2 + "\n");
-    System.out.println("The CRT decryption was " + String.format("%.4f", kbps2 / kbps)
+    System.out.println("      kbps: " + kbpsCRT + "\n");
+    System.out.println("The CRT decryption was " + String.format("%.4f", kbpsCRT / kbpsPlain)
         + "x faster than the plain way. However, this is not 4x faster than theorized. This is likely due to the overhead costs of initializing more BigInteger variables and conducting more BigInteger arithmetic operations within the CRT method.\n");
   }
 }
